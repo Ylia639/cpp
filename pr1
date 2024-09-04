@@ -1,1 +1,19 @@
-123
+
+#include <iostream>
+
+int main()
+{
+    setlocale (LC_ALL,"Rus");
+    int a, b, c;
+    std::cout << "значение выражения=\n";
+    std::cin >> a >> b;
+    c = a + b;
+    std::cout << "сумма равна= " << c << '\n';
+    c = a - b; 
+    std::cout << "разность равна= " << c<< '\n';
+    c = a * b;
+    std::cout << "произведение равно= " << c << '\n';
+    c = a / b; 
+    std::cout << "деление равно= " << c << '\n'; 
+    c = a % b; 
+    std::cout << "остаток деления= " << c << '\n';
