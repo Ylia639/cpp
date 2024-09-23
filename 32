@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cmath>
+#include <limits>
+
+#define M_PI 3.14159265358979323846
+double f(double x) {
+    return (-3 * x * sin(9 * sqrt(x + 5)) / (2 * sqrt(x + 5))) + (cos(9 * sqrt(x + 5)) / 3);
+}
+double steffensen(double x0, double eps, int& iterations) {
+    double x1, x2;
+    iterations = 0;
+    while (true) {
+        x1 = x0 + f(x0);
+        x2 = x1 + f(x1);
+        double x_next = x0 - (pow(x1 - x0, 2) / (x2 - 2 * x1 + x0));
+        iterations++;
+        if (fabs(x_next - x0) < eps) {
+            return x_next;
+        }
+        x0 = x_next;
+    }
+}
+int countRoots(double a, double b, double step) {
+    int root_count = 0;
+    double prev_value = f(a);
+    for (double x = a + step; x <= b; x += step) {
+        double current_value = f(x);
+        if (prev_value * current_value < 0) {
+            root_count++;
+        }
+        prev_value = current_value;
+    }
+    return root_count;
+}
+int main() {
+    setlocale(LC_ALL, "Russian");
+    double a = -3 * M_PI / 4;  
+    double b = M_PI / 4;      
+    double eps = 1e-9;   
+    double step = 0.01;      
+    int iterations;
+    double initial_guess = -1.51711;
+    int root_count = countRoots(a, b, step);
+    double refined_root = steffensen(initial_guess, eps, iterations);
+    std::cout << "1. Число корней уравнения на указанном отрезке: " << root_count << std::endl;
+    std::cout << "2. Границы локализованного отрезка для метода Стеффенсена: [" << a << ", " << b << "]" << std::endl;
+    std::cout << "3. Число итераций для уточнения корня: " << iterations << std::endl;
+    std::cout << "4. Значение найденного корня: " << refined_root << std::endl;
+    return 0;
+}
