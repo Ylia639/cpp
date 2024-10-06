@@ -1,0 +1,50 @@
+#include <iostream>
+#include <time.h>
+#include <string>
+void prArr(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << arr[i] << " "; 
+	}
+	std::cout << std::endl; 
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "rus");
+	const int A = 10;
+	int arr[] = { 4,3,5,6,0,8,2,9,1,7};
+	int n = sizeof(arr) / sizeof(arr[0]);
+	int count = 0;
+	srand(time(0));
+	std::cout << "Исходный массив: ";
+	for (int i = 0; i < A; i++)
+	{
+		std::cout << arr[i] << " ";
+	}
+	std::cout << std:: endl;
+	for (int k = 0; k < A - 1; k++)
+	{
+		int b = k;
+		for(int i=k+1; i<A; i++)
+		{
+			if (arr [i] < arr [b]) {
+				b = i;
+		} 
+		}
+		int tmp = arr [k];
+		arr [k] = arr[b];
+		arr [b] = tmp;
+		count++;
+		std::cout << count << ") ";
+		prArr(arr, n);
+
+	}
+		
+	std::cout << "Oбщее количество престановок: " << count ;
+	std::cout << std::endl;
+	system("pause");
+	return 0;
+}
