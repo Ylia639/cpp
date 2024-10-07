@@ -1,0 +1,71 @@
+#include <iostream> 
+#include <vector>      
+#include <cmath>       
+#include <algorithm>    
+#include <string>      
+#include <iomanip>     
+
+using namespace std;    
+
+
+double calculateMean(const vector<int>& data) {
+    int sum = 0;  
+    for (int num : data) { 
+        sum += num; 
+    }
+    return static_cast<double>(sum) / data.size();
+}
+double calculateMedian(vector<int> data) {
+    sort(data.begin(), data.end()); 
+    int size = data.size(); 
+    if (size % 2 == 0) {
+        return (data[size / 2 - 1] + data[size / 2]) / 2.0;
+    }
+    else {
+        return data[size / 2];
+    }
+}
+double calculateStdDev(const vector<int>& data, double mean) {
+    double variance = 0.0;
+    for (int num : data)
+    {
+        variance += pow(num - mean, 2);
+        return sqrt(variance / data.size());
+    }
+}
+
+int main() 
+{
+    setlocale(LC_ALL, "rus"); 
+    vector<int> data(5);
+    string operation; 
+
+    cout << "Введите 5 целых чисел:" << endl; 
+    for (int i = 0; i < 5; ++i) { 
+        cin >> data[i];  
+    }
+
+    cout << "Введите операцию (mean, median, stddev): ";
+    cin >> operation; 
+
+    double result; 
+    if (operation == "mean") { 
+        result = calculateMean(data);
+        cout << "Результат: " << result << endl; 
+    }
+    else if (operation == "median") { 
+        result = calculateMedian(data);
+        cout << "Результат: " << result << endl;
+    }
+    else if (operation == "stddev") { 
+        double mean = calculateMean(data); 
+        result = calculateStdDev(data, mean);
+        cout << fixed << setprecision(6); 
+        cout << "Результат: " << result << endl;
+    }
+    else { 
+        cerr << "Неизвестная операция. Допустимые значения: mean, median, stddev." << endl; 
+        return 1; 
+    }
+
+}
