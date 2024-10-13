@@ -1,71 +1,101 @@
 #include <iostream> 
-#include <vector>      
-#include <cmath>       
-#include <algorithm>    
-#include <string>      
-#include <iomanip>     
-
-using namespace std;    
-
-
-double calculateMean(const vector<int>& data) {
-    int sum = 0;  
-    for (int num : data) { 
-        sum += num; 
-    }
-    return static_cast<double>(sum) / data.size();
-}
-double calculateMedian(vector<int> data) {
-    sort(data.begin(), data.end()); 
-    int size = data.size(); 
-    if (size % 2 == 0) {
-        return (data[size / 2 - 1] + data[size / 2]) / 2.0;
-    }
-    else {
-        return data[size / 2];
-    }
-}
-double calculateStdDev(const vector<int>& data, double mean) {
-    double variance = 0.0;
-    for (int num : data)
-    {
-        variance += pow(num - mean, 2);
-        return sqrt(variance / data.size());
-    }
-}
-
-int main() 
-{
-    setlocale(LC_ALL, "rus"); 
-    vector<int> data(5);
-    string operation; 
-
-    cout << "Введите 5 целых чисел:" << endl; 
-    for (int i = 0; i < 5; ++i) { 
-        cin >> data[i];  
-    }
-
-    cout << "Введите операцию (mean, median, stddev): ";
-    cin >> operation; 
-
-    double result; 
-    if (operation == "mean") { 
-        result = calculateMean(data);
-        cout << "Результат: " << result << endl; 
-    }
-    else if (operation == "median") { 
-        result = calculateMedian(data);
-        cout << "Результат: " << result << endl;
-    }
-    else if (operation == "stddev") { 
-        double mean = calculateMean(data); 
-        result = calculateStdDev(data, mean);
-        cout << fixed << setprecision(6); 
-        cout << "Результат: " << result << endl;
-    }
-    else { 
-        cerr << "Неизвестная операция. Допустимые значения: mean, median, stddev." << endl; 
-        return 1; 
-    }
-
+#include <cstdlib> 
+#include <cstring> 
+#include <algorithm> 
+#include <math.h> 
+ 
+const char* arr1[3] = { "mean", "median", "stddev" }; 
+char* arr[6]; 
+int num = 0; 
+ 
+ 
+int Help() { 
+    std::cout << "Usage: program <num1> <num2> <num3> <num4> <num5> <operation>\n"; 
+    std::cout << "Supported operations: \n"; 
+    for (int i = 0; i < 3; i++)  
+    { 
+        std::cout<<"-" << arr1[i] << '\n'; 
+    } 
+    std::cout << std::endl; 
+    return 0; 
+} 
+ 
+int cmp(const char* a, const char* b) { 
+    return std::strcmp(a, b); 
+} 
+ 
+char** sort(char* arr[], int s) { 
+    std::sort(arr, arr + s, [](const char* a, const char* b) { 
+        return atoi(a) < atoi(b); 
+        }); 
+    return arr; 
+} 
+ 
+int Name(const char* arr2) 
+{ 
+    for (int i = 0; i < 3; ++i) 
+    { 
+        if (strcmp(arr1[i], arr2) == 0) 
+        { 
+            return i; 
+        } 
+    } 
+    return -1; 
+} 
+ 
+int main(int argc, char* argv[]) { 
+    if (argc != 7) { 
+        Help(); 
+        return 0; 
+    } 
+ 
+    if (Name(argv[6]) == -1)  
+    { 
+        Help(); 
+        return 0; 
+    } 
+    
+    for (int i = 1; i < argc - 1; i++, num++) { 
+        arr[num] = argv[i]; 
+    } 
+    arr[num] = argv[argc - 1]; 
+ 
+    char** sortarr = sort(arr, 6); 
+ 
+    for (int i = 0; i < 6; i++) { 
+        std::cout << sortarr[i] << " "; 
+    } 
+    std::cout << std::endl; 
+ 
+    if (strcmp(argv[6], "mean") == 0) { 
+        std::cout << "mean:\n"; 
+        double a = atof(sortarr[1]); 
+        double b = atof(sortarr[2]); 
+        double c = atof(sortarr[3]); 
+        double d = atof(sortarr[4]); 
+        double e = atof(sortarr[5]); 
+        double l = (a + b + c + d + e) / 5; 
+        std::cout << l << std::endl; 
+        return 0; 
+    } 
+    if (strcmp(argv[6], "median") == 0) { 
+        std::cout << "median:\n"; 
+        std::cout << atof(sortarr[3]); 
+        return 0; 
+    } 
+ 
+    if (strcmp(argv[6], "stddev") == 0) { 
+        std::cout << "stddev:\n"; 
+        double a = atof(sortarr[1]); 
+        double b = atof(sortarr[2]); 
+        double c = atof(sortarr[3]); 
+        double d = atof(sortarr[4]); 
+        double e = atof(sortarr[5]); 
+        double l = (a + b + c + d + e) / 5; 
+        double ll = (((a - l) * (a - l) + (b - l) * (b - l) + (c - l) * (c - l) + (d - l) * (d - l) + (e - l) * (e - l)) / 5); 
+        double lll = sqrt(ll); 
+        std::cout << lll; 
+    } 
+ 
+    return 0; 
 }
