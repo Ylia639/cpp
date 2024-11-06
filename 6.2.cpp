@@ -1,18 +1,20 @@
 #include <iostream>
-#include <random>
 #include <algorithm>
-int help()
-{
+
+int help() {
     std::cout << "ERROR\n";
     return 0;
 }
+
 bool varl(char* str) {
     for (int i = 0; str[i]; i++) {
         if (!isdigit(str[i]) && str[i] != ' ') {
             return false;
         }
-    }    return true;
+    }
+    return true;
 }
+
 int prov(int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
         if (!varl(argv[i])) {
@@ -21,71 +23,66 @@ int prov(int argc, char* argv[]) {
     }
     return 1;
 }
-int* sort(int argc, char* argv[]) {
-    int* n = new int[argc - 1];
-    for (int i = 1; i < argc; i++)
-    {
-        n[i - 1] = atoi(argv[i]);
+
+int sum_of_digits(int num) {
+    int sum = 0;
+    while (num > 0) {
+        sum += num % 10;
+        num /= 10;
     }
-    std::sort(n, n + argc - 1);
-    return n;
+    return sum;
+}
+bool comp(int a, int b) {
+    return sum_of_digits(a) < sum_of_digits(b);
 }
 
 int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "rus");
 
     int l = prov(argc, argv);
-    if (l == -1)
-    {
+    if (l == -1) {
         help();
         return 0;
     }
+    int* numbers = new int[argc - 1];
+    for (int i = 1; i < argc; i++) {
+        numbers[i - 1] = atoi(argv[i]);
+    }
+
     std::cout << "Введенные числа: ";
-    for (int i = 1; i < argc; i++)
-    {
-        int a = atoi(argv[i]);
-        std::cout << a << " ";
+    for (int i = 0; i < argc - 1; i++) {
+        std::cout << numbers[i] << " ";
     }
     std::cout << std::endl;
-    int* sortarr = sort(argc, argv);
+    std::sort(numbers, numbers + (argc - 1), comp);
     int* sumOfDig = new int[argc - 1];
-    for (int j = 0; j < argc - 1; j++)
-    {
-        int temp = sortarr[j];
-        int c = 0;
-        while (temp > 0)
-        {
-            int digit = temp % 10;
-            c += digit;
-            temp /= 10;
-        }
-        sumOfDig[j] = c;
+    for (int i = 0; i < argc - 1; i++) {
+        sumOfDig[i] = sum_of_digits(numbers[i]);
     }
-    std::cout << "Отсортированный массив: ";
-    for (int j = 0; j < argc - 1; j++)
-    {
-        std::cout << sortarr[j] << " ";
+
+    std::cout << "Сортированный массив суммы цифр: ";
+    for (int i = 0; i < argc - 1; i++) {
+        std::cout << sumOfDig[i] << " ";
     }
     std::cout << std::endl;
 
-    std::cout << "Массив сумм цифр: ";
-    for (int j = 0; j < argc - 1; j++)
-    {
-        std::cout << sumOfDig[j] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Min: " << sumOfDig[0] << std::endl;
-
-    int f = argc - 1;
-    for (int i = 0; i <= f - 1; i++) {
-        if (i = f - 1) {
-
-            std::cout << "Max: " << sumOfDig[i];
+    int minSum = sumOfDig[0];
+    int maxSum = sumOfDig[0];
+    for (int i = 1; i < argc - 1; i++) {
+        if (sumOfDig[i] < minSum) {
+            minSum = sumOfDig[i];
+        }
+        if (sumOfDig[i] > maxSum) {
+            maxSum = sumOfDig[i];
         }
     }
-    delete[] sortarr;
+
+    std::cout << "Min: " << minSum << std::endl;
+    std::cout << "Max: " << maxSum << std::endl;
+
+    delete[] numbers;
     delete[] sumOfDig;
 
     return 0;
 }
+
