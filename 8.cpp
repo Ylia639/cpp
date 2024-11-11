@@ -37,7 +37,7 @@ int main() {
         }
         std::cout << std::endl;
     }
-    std::ofstream outFile("C:\\Users\\Мой ПК\\OneDrive\\Desktop\\result.txt", std::ios::app); // открываем файл в режиме добавления
+    std::ofstream outFile("C:\\Users\\Мой ПК\\OneDrive\\Desktop\\result.txt", std::ios::app);
     if (!outFile) {
     
         return 1;
